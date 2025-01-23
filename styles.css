@@ -1,11 +1,18 @@
 /* styles.css */
 :root {
+    /* Dark theme (default) */
     --primary-color: #4F46E5;
     --secondary-color: #EC4899;
-    --background-color: #0F172A;
+    --bg-color: #0F172A;
     --surface-color: rgba(30, 41, 59, 0.7);
     --text-primary: #F8FAFC;
     --text-secondary: #94A3B8;
+    
+    /* Light theme variables */
+    --light-bg: #F1F5F9;
+    --light-surface: rgba(255, 255, 255, 0.9);
+    --light-text: #1E293B;
+    --light-text-secondary: #475569;
 }
 
 * {
@@ -16,12 +23,13 @@
 
 body {
     font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    background: var(--bg-color);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     color: var(--text-primary);
+    transition: background-color 0.3s ease;
 }
 
 .container {
@@ -37,13 +45,13 @@ body {
     padding: 2.5rem;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
 }
 
 .mode-indicator {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 2rem;
 }
 
 .mode-icon {
@@ -56,24 +64,31 @@ body {
     align-items: center;
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
 }
 
-.mode-icon i {
-    font-size: 1.5rem;
+.mode-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
     color: var(--primary-color);
+    transition: all 0.3s ease;
+    display: none; /* Hide all icons by default */
 }
 
 .mode-icon:hover {
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    background: rgba(79, 70, 229, 0.2);
 }
 
-.break-icon {
-    display: none;
+.mode-icon:hover svg {
+    transform: scale(1.1);
 }
 
 .mode-text {
     font-size: 1.25rem;
     font-weight: 600;
+    color: var(--text-primary);
 }
 
 .timer-container {
@@ -173,4 +188,301 @@ body {
     .timer-display {
         font-size: 3rem;
     }
+}
+
+/* Theme Specific Styles */
+[data-theme="light"] {
+    --bg-color: #F1F5F9;
+    --surface-color: rgba(255, 255, 255, 0.9);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+}
+
+/* Add these new styles to your existing CSS */
+.top-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.theme-toggle button {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: none;
+    background: rgba(79, 70, 229, 0.1);
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.theme-toggle i {
+    position: absolute;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.light-icon {
+    opacity: 0;
+    transform: translateY(10px) rotate(-90deg);
+}
+
+.dark-icon {
+    opacity: 0;
+    transform: translateY(-10px) rotate(90deg);
+}
+
+[data-theme="dark"] .dark-icon,
+[data-theme="light"] .light-icon {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Add these styles to control icon visibility */
+.mode-icon .work-icon,
+.mode-icon .break-icon {
+    display: none;
+}
+
+.work-mode .work-icon,
+.break-mode .break-icon {
+    display: block;
+}
+
+/* Light theme specific adjustments */
+[data-theme="light"] .pomodoro-app {
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .mode-icon,
+[data-theme="light"] .theme-toggle button {
+    background: rgba(79, 70, 229, 0.05);
+}
+
+/* Add these new styles and update existing ones */
+
+/* Initial state - only show work icon by default */
+.mode-icon .work-icon {
+    display: block;
+}
+
+.mode-icon .break-icon {
+    display: none;
+}
+
+/* Break mode state */
+.break-mode .mode-icon .work-icon {
+    display: none;
+}
+
+.break-mode .mode-icon .break-icon {
+    display: block;
+}
+
+/* Theme Switch Styles */
+.theme-switch-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: none;
+    background: rgba(79, 70, 229, 0.1);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.theme-switch-btn:hover {
+    transform: translateY(-2px);
+    background: rgba(79, 70, 229, 0.2);
+}
+
+.theme-switch-btn i {
+    font-size: 1.2rem;
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+/* Theme icon visibility */
+[data-theme="dark"] .theme-switch-btn .fa-sun {
+    display: block;
+}
+
+[data-theme="dark"] .theme-switch-btn .fa-moon {
+    display: none;
+}
+
+[data-theme="light"] .theme-switch-btn .fa-sun {
+    display: none;
+}
+
+[data-theme="light"] .theme-switch-btn .fa-moon {
+    display: block;
+}
+
+/* Show/hide icons based on theme */
+[data-theme="dark"] .theme-switch-btn .fa-sun {
+    display: none;
+}
+
+[data-theme="light"] .theme-switch-btn .fa-moon {
+    display: none;
+}
+
+.theme-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Update top controls layout */
+.top-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+/* Update the theme toggle styles */
+.mode-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+/* Theme icon visibility */
+.mode-icon .light-icon,
+.mode-icon .dark-icon {
+    display: none;
+}
+
+[data-theme="dark"] .mode-icon .light-icon {
+    display: block;
+}
+
+[data-theme="light"] .mode-icon .dark-icon {
+    display: block;
+}
+
+/* Animation for icon hover */
+.mode-icon:hover svg {
+    transform: rotate(12deg);
+}
+
+/* Optional: Add animation for theme transition */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Update mode icon container */
+.mode-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(79, 70, 229, 0.1);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.mode-icon:hover {
+    transform: translateY(-2px);
+    background: rgba(79, 70, 229, 0.2);
+}
+
+/* Work/Break mode icon visibility */
+.work-mode .work-icon {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.break-mode .break-icon {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Work mode icon visibility */
+.work-mode #toggle-mode .work-icon {
+    display: block;
+}
+
+.break-mode #toggle-mode .break-icon {
+    display: block;
+}
+
+/* Theme mode icon visibility */
+[data-theme="dark"] #theme-switch .light-icon,
+[data-theme="light"] #theme-switch .dark-icon {
+    display: block;
+}
+
+[data-theme="dark"] #theme-switch .dark-icon,
+[data-theme="light"] #theme-switch .light-icon {
+    display: none;
+}
+
+/* Update theme icon visibility rules */
+/* Remove any previous theme icon visibility rules and use these instead */
+
+.mode-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+    display: none; /* Hide all icons by default */
+}
+
+/* Theme switch icons */
+[data-theme="dark"] #theme-switch .light-icon {
+    display: block;
+}
+
+[data-theme="light"] #theme-switch .dark-icon {
+    display: block;
+}
+
+/* Work/Break mode icons */
+.work-mode #toggle-mode .work-icon {
+    display: block;
+}
+
+.break-mode #toggle-mode .break-icon {
+    display: block;
+}
+
+/* Update the theme icon visibility rules */
+#theme-switch svg {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    position: absolute;
+}
+
+/* Show the correct icon based on theme */
+[data-theme="dark"] #theme-switch .light-icon {
+    opacity: 1;
+    position: static;
+}
+
+[data-theme="light"] #theme-switch .dark-icon {
+    opacity: 1;
+    position: static;
+}
+
+/* Optional: If you want to keep a fade animation, use this simplified version */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
